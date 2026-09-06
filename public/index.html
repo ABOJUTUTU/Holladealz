@@ -867,7 +867,6 @@
             padding: 0.5rem;
             width: 44px;
             height: 44px;
-            display: flex;
             align-items: center;
             justify-content: center;
             z-index: 1001;
@@ -914,6 +913,9 @@
             .cart-container { grid-template-columns: 1fr; }
             .admin-layout { grid-template-columns: 1fr; }
             .form-grid { grid-template-columns: 1fr; }
+            .mobile-menu-btn {
+                display: flex !important;
+            }
             .nav-links {
                 display: none;
                 position: fixed;
@@ -936,9 +938,6 @@
                 padding: 1rem 0;
                 font-size: 1.2rem;
                 border-bottom: 1px solid var(--border);
-            }
-            .mobile-menu-btn {
-                display: flex !important;
             }
             .nav-actions {
                 gap: 0.5rem;
