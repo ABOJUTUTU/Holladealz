@@ -7,7 +7,15 @@ const path = require('path');
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: [
+    'http://localhost:5000',
+    'http://localhost:5500',
+    'https://holladealz.onrender.com',
+    'https://holladealz-api.onrender.com'
+  ],
+  credentials: true
+}));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.static('public'));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));

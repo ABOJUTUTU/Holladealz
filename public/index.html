@@ -64,23 +64,29 @@
         nav {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 1rem 2rem;
+            padding: 1rem 1.5rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 1rem;
         }
         .logo {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             text-decoration: none;
             color: var(--text);
             font-weight: 800;
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             letter-spacing: -0.5px;
+            flex-shrink: 0;
+            max-width: 60%;
+            overflow: hidden;
         }
         .logo-icon {
-            width: 45px; height: 45px;
+            width: 40px;
+            height: 40px;
+            flex-shrink: 0;
             background: linear-gradient(135deg, #000 50%, var(--gold) 50%);
             border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
@@ -99,6 +105,11 @@
             border-radius: 50%;
         }
         .logo span { color: var(--gold); }
+        .logo div {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
         .nav-links {
             display: flex;
             gap: 2rem;
@@ -853,6 +864,14 @@
             color: var(--text);
             font-size: 1.5rem;
             cursor: pointer;
+            padding: 0.5rem;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1001;
+            position: relative;
         }
 
         /* Empty State */
@@ -895,10 +914,41 @@
             .cart-container { grid-template-columns: 1fr; }
             .admin-layout { grid-template-columns: 1fr; }
             .form-grid { grid-template-columns: 1fr; }
-            .nav-links { display: none; }
-            .mobile-menu-btn { display: block; }
+            .nav-links {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: var(--header-bg);
+                flex-direction: column;
+                padding: 5rem 2rem 2rem;
+                box-shadow: var(--shadow);
+                z-index: 999;
+                gap: 0;
+                animation: slideDown 0.3s ease-out;
+            }
+            .nav-links.active {
+                display: flex;
+            }
+            .nav-links a {
+                padding: 1rem 0;
+                font-size: 1.2rem;
+                border-bottom: 1px solid var(--border);
+            }
+            .mobile-menu-btn {
+                display: flex !important;
+            }
+            .nav-actions {
+                gap: 0.5rem;
+            }
             .hero h1 { font-size: 2rem; }
             .products-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         @media (max-width: 640px) {
             main { padding: 1rem; }
@@ -921,11 +971,11 @@
                 <div>HOLLADEALZ <span>NG</span></div>
             </a>
             <ul class="nav-links" id="mainNav">
-                <li><a href="#" class="active" onclick="router.navigate('home')">Home</a></li>
-                <li><a href="#" onclick="router.navigate('shop')">Shop</a></li>
-                <li><a href="#" onclick="router.navigate('orders')">My Orders</a></li>
-                <li><a href="#" onclick="router.navigate('cart')">Cart</a></li>
-                <li id="adminNavItem" class="hidden"><a href="#" onclick="router.navigate('admin')">Admin</a></li>
+                <li><a href="#" class="active" onclick="ui.closeMobileMenu(); router.navigate('home')">Home</a></li>
+                <li><a href="#" onclick="ui.closeMobileMenu(); router.navigate('shop')">Shop</a></li>
+                <li><a href="#" onclick="ui.closeMobileMenu(); router.navigate('orders')">My Orders</a></li>
+                <li><a href="#" onclick="ui.closeMobileMenu(); router.navigate('cart')">Cart</a></li>
+                <li id="adminNavItem" class="hidden"><a href="#" onclick="ui.closeMobileMenu(); router.navigate('admin')">Admin</a></li>
             </ul>
             <div class="nav-actions">
                 <button class="btn-icon" onclick="theme.toggle()" title="Toggle Theme">
@@ -1291,7 +1341,9 @@
     </footer>
 
     <script>
-const API_URL = 'http://localhost:5000/api';
+const API_URL = window.location.hostname === 'localhost'
+    ? 'http://localhost:5000/api'
+    : 'https://holladealz-api.onrender.com/api';
 
 // ==================== API CLIENT ====================
 const api = {
@@ -1357,6 +1409,23 @@ const ui = {
     },
     formatPrice(price) {
         return '₦' + price.toLocaleString('en-NG');
+    },
+    toggleMobileMenu() {
+        const nav = document.getElementById('mainNav');
+        const btn = document.querySelector('.mobile-menu-btn');
+
+        nav.classList.toggle('active');
+
+        const isOpen = nav.classList.contains('active');
+        btn.innerHTML = isOpen ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+        document.body.style.overflow = isOpen ? 'hidden' : '';
+    },
+    closeMobileMenu() {
+        const nav = document.getElementById('mainNav');
+        const btn = document.querySelector('.mobile-menu-btn');
+        nav.classList.remove('active');
+        btn.innerHTML = '<i class="fas fa-bars"></i>';
+        document.body.style.overflow = '';
     }
 };
 
