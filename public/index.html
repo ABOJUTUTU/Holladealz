@@ -73,14 +73,13 @@
         .logo {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             text-decoration: none;
             color: var(--text);
             font-weight: 800;
-            font-size: 1.3rem;
-            letter-spacing: -0.5px;
+            font-size: 1.1rem;
             flex-shrink: 0;
-            max-width: 60%;
+            max-width: 55%;
             overflow: hidden;
         }
         .logo-icon {
@@ -915,6 +914,7 @@
             .form-grid { grid-template-columns: 1fr; }
             .mobile-menu-btn {
                 display: flex !important;
+                z-index: 999;
             }
             .nav-links {
                 display: none;
@@ -923,21 +923,40 @@
                 left: 0;
                 right: 0;
                 bottom: 0;
-                background: var(--header-bg);
+                background: var(--bg);
                 flex-direction: column;
-                padding: 5rem 2rem 2rem;
-                box-shadow: var(--shadow);
-                z-index: 999;
+                align-items: center;
+                justify-content: flex-start;
+                padding: 6rem 2rem 2rem;
+                box-shadow: none;
+                z-index: 998;
                 gap: 0;
                 animation: slideDown 0.3s ease-out;
+                border-top: 1px solid var(--border);
             }
             .nav-links.active {
-                display: flex;
+                display: flex !important;
+            }
+            .nav-links li {
+                width: 100%;
+                text-align: center;
             }
             .nav-links a {
-                padding: 1rem 0;
-                font-size: 1.2rem;
+                display: block;
+                padding: 1.2rem 0;
+                font-size: 1.3rem;
+                font-weight: 600;
+                color: var(--text);
                 border-bottom: 1px solid var(--border);
+                width: 100%;
+            }
+            .nav-links a:hover,
+            .nav-links a.active {
+                color: var(--gold);
+                background: var(--bg-secondary);
+            }
+            .mobile-menu-btn i {
+                font-size: 1.5rem;
             }
             .nav-actions {
                 gap: 0.5rem;
@@ -967,7 +986,10 @@
         <nav>
             <a href="#" class="logo" onclick="router.navigate('home')">
                 <div class="logo-icon">HD</div>
-                <div>HOLLADEALZ <span>NG</span></div>
+                <div style="display: flex; flex-direction: column; line-height: 1.1;">
+                    <span style="font-size: 1.1rem;">HOLLADEALZ</span>
+                    <span style="font-size: 0.75rem; color: var(--gold); letter-spacing: 2px;">NG</span>
+                </div>
             </a>
             <ul class="nav-links" id="mainNav">
                 <li><a href="#" class="active" onclick="ui.closeMobileMenu(); router.navigate('home')">Home</a></li>
